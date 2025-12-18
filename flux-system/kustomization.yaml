@@ -7,10 +7,11 @@ resources:
 patches:
   - patch: |
       - op: add
-        path: /spec/template/spec/tolerations/
+        path: /spec/template/spec/
         value: |
-          key: "node.cloudprovider.kubernetes.io/uninitialized"
-          value: "true"
+          tolerations:
+          - key: "node.cloudprovider.kubernetes.io/uninitialized"
+            value: "true"
     target:
       kind: Deployment
       namespace: flux-system
