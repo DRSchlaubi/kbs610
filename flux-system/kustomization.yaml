@@ -7,11 +7,12 @@ resources:
 patches:
   - patch: |
       - op: add
-        path: /spec/template/spec/
-        value: |
-          tolerations:
+        path: /spec/template/spec/tolerations
+        value:
           - key: "node.cloudprovider.kubernetes.io/uninitialized"
+            operator: "Equal"
             value: "true"
+            effect: "NoSchedule"
     target:
       kind: Deployment
       namespace: flux-system
