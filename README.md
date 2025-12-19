@@ -9,6 +9,8 @@ Repo for Cloud Services Project by @7reax, @Schlauer-Hax, @Angry007 and @DRSchla
 
 # Structure
 - [infra](infra) - Terraform infrastructure code
+- [projects](projects) - Meta directory to register all FluxCD projects
+- [kube-sytem](kube-system) - Manifests for Kubernetes resources required to operate the cluster itself
 
 # Repo Name explanation
 
