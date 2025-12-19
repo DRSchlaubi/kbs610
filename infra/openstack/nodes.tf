@@ -1,7 +1,17 @@
+data "talos_image_factory_urls" "talos-1116" {
+  talos_version = "v1.11.6"
+  schematic_id  = "376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba"
+  platform      = "openstack"
+}
+
+output "installer_url" {
+  value = data.talos_image_factory_urls.talos-1116.urls.disk_image
+}
+
 resource "openstack_images_image_v2" "talos-1116" {
   name             = "Talos v1.11.6"
   # Created via https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&platform=openstack&target=cloud&version=1.11.6
-  image_source_url = "https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.11.6/openstack-amd64.raw.xz"
+  image_source_url = data.talos_image_factory_urls.talos-1116.urls.disk_image
   container_format = "bare"
   disk_format      = "raw"
   decompress       = "true"
