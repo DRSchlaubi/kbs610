@@ -33,12 +33,6 @@ provider "flux" {
   }
 }
 
-provider "github" {
-  alias = "github"
-  owner = var.github_org
-  token = var.github_token
-}
-
 provider "talos" {
   alias = "talos"
 }

@@ -12,5 +12,5 @@ module "flux" {
   github_repo  = var.github_repo
   github_token = var.github_token
 
-  providers    = { flux = flux.flux, github = github.github }
+  providers    = { flux = flux.flux }
 }
