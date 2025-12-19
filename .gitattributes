@@ -1,2 +1,2 @@
 *.yaml linguist-detectable
-flux-system linguist-vendored
+flux-system/** linguist-vendored
