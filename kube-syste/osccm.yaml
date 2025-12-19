@@ -1,0 +1,40 @@
+kind: HelmRepository
+apiVersion: source.toolkit.fluxcd.io/v1
+metadata:
+  namespace: kube-system
+  name: cern
+spec:
+  interval: 1h
+  url: https://kubernetes.github.io/cloud-provider-openstack/
+---
+kind: HelmChart
+apiVersion: source.toolkit.fluxcd.io/v1
+metadata:
+  namespace: kube-system
+  name: openstack-cloud-controller-manager
+spec:
+  chart: openstack-cloud-controller-manager
+  interval: 1h
+  version: "2.x"
+  sourceRef:
+    kind: HelmRepository
+    name: cern
+---
+kind: HelmRelease
+apiVersion: helm.toolkit.fluxcd.io/v2
+metadata:
+  namespace: kube-system
+  name: openstack-cloud-controller-manager
+spec:
+  interval: 1h
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 2m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 3m
+  chartRef:
+    kind: HelmChart
+    name: openstack-cloud-controller-manager
