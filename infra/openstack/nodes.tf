@@ -19,10 +19,10 @@ resource "openstack_compute_instance_v2" "talos-controlplanes" {
   name      = "talos-controlplane-${count.index}"
   image_id  = openstack_images_image_v2.talos-1116.id
   flavor_id = data.openstack_compute_flavor_v2.m1-medium.id
-  count = length(openstack_networking_port_v2.talos-controlplane)
+  count = length(openstack_networking_port_v2.talos-controlplanes)
 
   network {
-    port = openstack_networking_port_v2.talos-controlplane[count.index].id
+    port = openstack_networking_port_v2.talos-controlplanes[count.index].id
   }
 }
 

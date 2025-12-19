@@ -18,9 +18,9 @@ resource "openstack_networking_subnet_v2" "talos-subnet-1" {
 resource "openstack_networking_floatingip_v2" "talos-controlplanes" {
   depends_on = [openstack_networking_network_v2.talos, openstack_networking_router_interface_v2.servers]
   pool       = "ext_net"
-  port_id    = openstack_networking_port_v2.talos-controlplane[count.index].id
+  port_id    = openstack_networking_port_v2.talos-controlplanes[count.index].id
 
-  count = length(openstack_networking_port_v2.talos-controlplane)
+  count = length(openstack_networking_port_v2.talos-controlplanes)
 }
 
 resource "openstack_networking_floatingip_v2" "talos-workers" {
@@ -30,7 +30,7 @@ resource "openstack_networking_floatingip_v2" "talos-workers" {
   count      = length(openstack_networking_port_v2.talos-workers)
 }
 
-resource "openstack_networking_port_v2" "talos-controlplane" {
+resource "openstack_networking_port_v2" "talos-controlplanes" {
   depends_on         = [openstack_networking_subnet_v2.talos-subnet-1]
   name               = "talos-controlplane-${count.index}"
   count              = 1
