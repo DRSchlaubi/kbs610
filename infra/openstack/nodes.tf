@@ -20,8 +20,8 @@ resource "openstack_images_image_v2" "talos-1116" {
 data "openstack_compute_flavor_v2" "m1-small" {
   name = "m1.small"
 }
-data "openstack_compute_flavor_v2" "m1-medium" {
-  name = "m1.medium"
+data "openstack_compute_flavor_v2" "m1-large" {
+  name = "m1.large"
 }
 
 resource "openstack_compute_instance_v2" "talos-controlplanes" {
@@ -41,7 +41,7 @@ resource "openstack_compute_instance_v2" "talos-workers" {
   count = length(openstack_networking_port_v2.talos-workers)
   name      = "talos-worker-${count.index}"
   image_id  = openstack_images_image_v2.talos-1116.id
-  flavor_id = data.openstack_compute_flavor_v2.m1-medium.id
+  flavor_id = data.openstack_compute_flavor_v2.m1-large.id
 
   network {
     port = openstack_networking_port_v2.talos-workers[count.index].id
