@@ -33,7 +33,7 @@ resource "openstack_networking_floatingip_v2" "talos-workers" {
 resource "openstack_networking_port_v2" "talos-controlplanes" {
   depends_on         = [openstack_networking_subnet_v2.talos-subnet-1]
   name               = "talos-controlplane-${count.index}"
-  count              = 1
+  count              = 3
   network_id         = openstack_networking_network_v2.talos.id
   admin_state_up     = true
   security_group_ids = [openstack_networking_secgroup_v2.talos_allow_all.id]
@@ -42,7 +42,7 @@ resource "openstack_networking_port_v2" "talos-controlplanes" {
 resource "openstack_networking_port_v2" "talos-workers" {
   depends_on         = [openstack_networking_subnet_v2.talos-subnet-1]
   name               = "talos-worker-${count.index}"
-  count              = 1
+  count              = 3
   network_id         = openstack_networking_network_v2.talos.id
   admin_state_up     = true
   security_group_ids = [openstack_networking_secgroup_v2.talos_allow_all.id]
