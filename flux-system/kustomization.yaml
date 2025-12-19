@@ -1,0 +1,19 @@
+# Ref: https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - gotk-components.yaml
+  - gotk-sync.yaml
+patches:
+  - patch: |
+      - op: add
+        path: /spec/template/spec/tolerations
+        value:
+          - key: "node.cloudprovider.kubernetes.io/uninitialized"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+    target:
+      kind: Deployment
+      namespace: flux-system
+---
