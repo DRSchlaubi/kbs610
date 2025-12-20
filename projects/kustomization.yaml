@@ -1,3 +1,2 @@
 resources:
   - kube-system.yaml
-  - secrets.yaml
