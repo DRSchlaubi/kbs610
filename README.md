@@ -9,6 +9,8 @@ Repo for Cloud Services Project by @7reax, @Schlauer-Hax, @Angry007 and @DRSchla
 - [gcloud](https://docs.cloud.google.com/sdk/docs/install-sdk)
 - [sops](https://getsops.io)
 
+`brew install terraform kubectl talosctl gcloud-cli sops`
+
 # Structure
 - [infra](infra) - Terraform infrastructure code
 - [projects](projects) - Meta directory to register all FluxCD projects
