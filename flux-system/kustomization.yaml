@@ -13,7 +13,10 @@ patches:
             operator: "Equal"
             value: "true"
             effect: "NoSchedule"
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --feature-gates=ObjectLevelWorkloadIdentity=true
     target:
       kind: Deployment
-      namespace: flux-system
+      labelSelector: "app.kubernetes.io/part-of=flux"
 ---
