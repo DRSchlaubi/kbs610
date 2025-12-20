@@ -1,2 +1,4 @@
+namespace: kube-system
 resources:
   - osccm.yaml
+  - local-path-provisioner.yaml

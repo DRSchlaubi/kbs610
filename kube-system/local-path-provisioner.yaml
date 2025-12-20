@@ -1,0 +1,27 @@
+kind: OCIRepository
+apiVersion: source.toolkit.fluxcd.io/v1
+metadata:
+  name: local-path-provisioner
+spec:
+  interval: 1h
+  url: oci://ghcr.io/rancher/local-path-provisioner/charts/local-path-provisioner
+  ref:
+    semver: "0.0.x"
+---
+kind: HelmRelease
+apiVersion: helm.toolkit.fluxcd.io/v2
+metadata:
+  name: local-path-provisioner
+spec:
+  interval: 12h
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 2m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 3m
+  chartRef:
+    kind: OCIRepository
+    name: local-path-provisioner
