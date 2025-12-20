@@ -12,16 +12,9 @@ Repo for Cloud Services Project by @7reax, @Schlauer-Hax, @Angry007 and @DRSchla
 # Structure
 - [infra](infra) - Terraform infrastructure code
 - [projects](projects) - Meta directory to register all FluxCD projects
-- [kube-sytem](kube-system) - Manifests for Kubernetes resources required to operate the cluster itself
+- [kube-system](kube-system) - Manifests for Kubernetes resources required to operate the cluster itself
+- [secrets](secrets) - Encrypted secrets, see readme of [secrets](secrets) directory for more information
 
-# Secret management
-
-Secrets are stored in this repo itself, for security reasons they're 
-encrypted using [SOPS](https://getsops.io) using an encryption 
-key stored in [GCP KMS](https://cloud.google.com/security/products/security-key-management?hl=de)
-
-To create a secret make sure both `gcloud` and `sops` are installed and run:
-`./encrypt-secret.sh <file to encrypt>` or `.\encrypt-secret.ps1 <file to encrypt>`
 
 # Repo Name explanation
 

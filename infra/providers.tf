@@ -36,3 +36,15 @@ provider "flux" {
 provider "talos" {
   alias = "talos"
 }
+
+provider "kubernetes" {
+  client_certificate     = local.kubeconfig.client_certificate
+  client_key             = local.kubeconfig.client_key
+  cluster_ca_certificate = local.kubeconfig.cluster_ca_certificate
+  host                   = local.kubeconfig.host
+}
+
+provider "google" {
+  project = var.google_project
+  region = "auto"
+}

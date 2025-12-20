@@ -12,5 +12,8 @@ module "flux" {
   github_repo  = var.github_repo
   github_token = var.github_token
 
+  kubeconfig = local.kubeconfig
+  google_project = var.google_project
+
   providers    = { flux = flux.flux }
 }

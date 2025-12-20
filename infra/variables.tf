@@ -31,3 +31,8 @@ variable "github_token" {
   type = string
   sensitive = true
 }
+
+variable "google_project" {
+  type = string
+  default = "kbs610"
+}

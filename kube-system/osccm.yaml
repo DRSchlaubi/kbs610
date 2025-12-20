@@ -38,3 +38,9 @@ spec:
   chartRef:
     kind: HelmChart
     name: openstack-cloud-controller-manager
+  values:
+    # secret is created in /secrets/osccm.yaml
+    secret:
+      enabled: true
+      name: cloud-config
+      create: false
