@@ -1,0 +1,3 @@
+resources:
+  - secret.enc.yaml
+  - osccm.yaml
