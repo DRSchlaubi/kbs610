@@ -41,7 +41,7 @@ spec:
     - "whoami.kbs610.click"
   rules:
     - backendRefs:
-        - name: cloudflare
+        - name: whoami
           port: 80
     - filters:
         - type: ExtensionRef
