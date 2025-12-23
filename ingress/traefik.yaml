@@ -73,7 +73,7 @@ spec:
         port: 80
         proxyProtocol:
           enabled: true
-          trustedIPs: [ "192.168.2.0/24" ]
+          trustedIPs: ["10.244.0.0/16"]
       websecure:
         port: 443
         http3:
@@ -81,4 +81,4 @@ spec:
           enabled: false
         proxyProtocol:
           enabled: true
-          trustedIPs: [ "192.168.2.0/24" ]
+          trustedIPs: ["10.244.0.0/16"]
