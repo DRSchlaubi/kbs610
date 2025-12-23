@@ -2,6 +2,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: cloudflare
+  namespace: ingress
   annotations:
     cert-manager.io/issuer: cloudflare
     cert-manager.io/issuer-kind: ClusterOriginIssuer
