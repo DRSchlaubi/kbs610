@@ -9,15 +9,22 @@ metadata:
     cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
 spec:
   gatewayClassName: traefik
+
   listeners:
     - name: web
       hostname: "*.kbs610.click"
       port: 80
       protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
     - name: websecure
       hostname: "*.kbs610.click"
       port: 443
       protocol: HTTPS
+      allowedRoutes:
+        namespaces:
+          from: All
       tls:
         mode: Terminate
         certificateRefs:
