@@ -2,27 +2,27 @@ terraform {
   required_providers {
     talos = {
       source  = "siderolabs/talos"
-      version = "0.9.0"
+      version = "0.10.0"
     }
     openstack = {
       source  = "terraform-provider-openstack/openstack"
-      version = "3.4.0"
+      version = ">= 3.0"
     }
     flux = {
       source  = "fluxcd/flux"
-      version = ">= 1.7"
+      version = ">= 1"
     }
     google = {
       source  = "hashicorp/google"
-      version = "7.14.1"
+      version = ">= 7.0"
     }
     jwk = {
       source  = "jjacobelli/jwk"
-      version = "1.1.9"
+      version = ">= 1.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.38.0"
+      version = ">= 2.38"
     }
   }
 }
