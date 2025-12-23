@@ -10,14 +10,3 @@ spec:
       name: cfapi-token
       key: key
 ---
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: cloudflare
-  namespace: ingress
-spec:
-  plugin:
-    cloudflare:
-      # Cloudflare connects via cloudflared
-      trustedCIDRs: ["10.244.0.0/16", "10.32.4.0/22"]
-      overwriteRequestHeader: true
