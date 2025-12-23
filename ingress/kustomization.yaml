@@ -1,9 +1,6 @@
 namespace: ingress
 resources:
-  - traefik.yaml
   - cert-manager.yaml
   - cloudflare-ca-controller.yaml
-  - cloudflare.yaml
-  - gateway.yaml
-  - flux-receivers.yaml
-  - whoami.yaml
+  - traefik.yaml
+  - config.yaml

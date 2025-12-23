@@ -1,0 +1,6 @@
+namespace: ingress
+resources:
+  - cloudflare.yaml
+  - flux-receivers.yaml
+  - gateway.yaml
+  - whoami.yaml
