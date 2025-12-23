@@ -5,3 +5,5 @@ resources:
   - cloudflare-ca-controller.yaml
   - cloudflare.yaml
   - gateway.yaml
+  - flux-receivers.yaml
+  - whoami.yaml
