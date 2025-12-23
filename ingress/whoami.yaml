@@ -38,7 +38,7 @@ spec:
   parentRefs:
     - name: cloudflare
   hostnames:
-    - "whoami.schlau.bi"
+    - "whoami.kbs610.click"
   rules:
     - backendRefs:
         - name: cloudflare

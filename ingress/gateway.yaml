@@ -10,11 +10,11 @@ spec:
   gatewayClassName: traefik
   listeners:
     - name: web
-      hostname: "*.schlau.bi"
+      hostname: "*.kbs610.click"
       port: 80
       protocol: HTTP
     - name: websecure
-      hostname: "*.schlau.bi"
+      hostname: "*.kbs610.click"
       port: 443
       protocol: HTTPS
       tls:

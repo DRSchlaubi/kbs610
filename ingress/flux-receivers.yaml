@@ -6,7 +6,7 @@ spec:
   parentRefs:
     - name: cloudflare
   hostnames:
-    - "flux-receiver.schlaubi.net"
+    - "flux-receiver.kbs610.click"
   rules:
     - backendRefs:
         - name: webhook-receiver
