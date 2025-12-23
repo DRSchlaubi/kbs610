@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cloudflare
+  annotations:
+    cert-manager.io/issuer: cloudflare
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: web
+      hostname: "*.schlau.bi"
+      port: 80
+      protocol: HTTP
+    - name: websecure
+      hostname: "*.schlau.bi"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: cloudflare-cert

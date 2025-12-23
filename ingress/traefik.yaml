@@ -36,10 +36,17 @@ spec:
     kind: HelmChart
     name: traefik
   values:
+    providers:
+      kubernetesGateway:
+        enabled: true
     additionalArguments:
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.priority=1
+    gatewayClass:
+      enabled: true
+    gateway:
+      enabled: false # gateway is deployed by ./gateway.yaml
     logs:
       general:
         level: DEBUG

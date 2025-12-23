@@ -1,0 +1,20 @@
+apiVersion: cert-manager.k8s.cloudflare.com/v1
+kind: ClusterOriginIssuer
+metadata:
+  name: cloudflare
+spec:
+  requestType: OriginECC
+  auth:
+    tokenRef:
+      name: cfapi-token
+      key: key
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cloudflare-proxy
+spec:
+  plugin:
+    cloudflare:
+      trustedCIDRs: []
+      overwriteRequestHeader: true
