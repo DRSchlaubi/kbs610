@@ -1,17 +1,31 @@
-data "talos_image_factory_urls" "talos-1116" {
-  talos_version = "v1.11.6"
-  schematic_id  = "376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba"
+data "talos_image_factory_extensions_versions" "this" {
+  talos_version = "v1.12.0"
+  filters = {
+    names = ["cloudflared"]
+  }
+}
+
+resource "talos_image_factory_schematic" "this" {
+  schematic = yamlencode(
+    {
+      customization = {
+        systemExtensions = {
+          officialExtensions = data.talos_image_factory_extensions_versions.this.extensions_info.*.name
+        }
+      }
+    }
+  )
+}
+
+data "talos_image_factory_urls" "this" {
+  talos_version = data.talos_image_factory_extensions_versions.this.talos_version
+  schematic_id  = talos_image_factory_schematic.this.id
   platform      = "openstack"
 }
 
-output "installer_url" {
-  value = data.talos_image_factory_urls.talos-1116.urls.disk_image
-}
-
 resource "openstack_images_image_v2" "talos-1116" {
-  name             = "Talos v1.11.6"
-  # Created via https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&platform=openstack&target=cloud&version=1.11.6
-  image_source_url = data.talos_image_factory_urls.talos-1116.urls.disk_image
+  name             = "Talos"
+  image_source_url = data.talos_image_factory_urls.this.urls.disk_image
   container_format = "bare"
   disk_format      = "raw"
   decompress       = "true"

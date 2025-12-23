@@ -36,3 +36,14 @@ variable "google_project" {
   type = string
   default = "kbs610"
 }
+
+variable "cloudflare_tunnel_token" {
+  type = string
+  sensitive = true
+}
+
+variable "cluster_endpoint" {
+  type = string
+  default = "https://cluster.kbs610.click:6443"
+}
+

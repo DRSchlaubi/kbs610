@@ -6,6 +6,8 @@ terraform {
 module "openstack" {
   source       = "./openstack"
   cluster_name = var.cluster_name
+  cloudflare_tunnel_token = var.cloudflare_tunnel_token
+  cluster_endpoint = var.cluster_endpoint
   providers    = { openstack = openstack.openstack, talos = talos.talos }
 }
 
@@ -19,6 +21,7 @@ module "flux" {
 
   kubeconfig     = local.kubeconfig
   google_project = var.google_project
+  cluster_endpoint = var.cluster_endpoint
 
   providers = { flux = flux.flux }
 }

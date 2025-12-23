@@ -5,6 +5,13 @@ locals {
   control-plane-ips          = [for i in range(length(openstack_compute_instance_v2.talos-controlplanes)) : openstack_compute_instance_v2.talos-controlplanes[i].network[0].fixed_ip_v4]
   worker-floating-ips        = [for i in range(length(openstack_networking_floatingip_v2.talos-workers)) : openstack_networking_floatingip_v2.talos-workers[i].address]
   worker-ips                 = [for i in range(length(openstack_compute_instance_v2.talos-workers)) : openstack_compute_instance_v2.talos-workers[i].network[0].fixed_ip_v4]
+
+  rendered-cloudflare-config = templatefile("${path.module}/files/cloudflared-config.yaml.tftpl", {
+    tunnel_token = var.cloudflare_tunnel_token
+  })
+  rendered-cluster-jwts = templatefile("${path.module}/files/cluster-auth.yaml.tftpl", {
+    cluster_endpoint = var.cluster_endpoint
+  })
 }
 
 data "talos_machine_configuration" "control-planes" {
@@ -38,8 +45,10 @@ resource "talos_machine_configuration_apply" "control-planes" {
   endpoint                    = local.control-plane-floating-ips[count.index]
 
   count = length(local.control-plane-floating-ips)
+
   config_patches = [
     file("${path.module}/files/enable-cloud-provider.yaml"),
+    local.rendered-cluster-jwts,
     yamlencode({
       machine = {
         certSANs = [
@@ -55,7 +64,8 @@ resource "talos_machine_configuration_apply" "control-planes" {
           ]
         }
       }
-    })
+    }),
+    local.rendered-cloudflare-config
   ]
 }
 
@@ -68,7 +78,8 @@ resource "talos_machine_configuration_apply" "worker" {
 
   count = length(openstack_networking_port_v2.talos-workers)
   config_patches = [
-    file("${path.module}/files/enable-cloud-provider.yaml")
+    file("${path.module}/files/enable-cloud-provider.yaml"),
+    local.rendered-cloudflare-config
   ]
 }
 
@@ -85,10 +96,10 @@ resource "talos_cluster_kubeconfig" "this" {
   node                 = openstack_networking_floatingip_v2.talos-controlplanes[0].address
 }
 
-data "talos_cluster_health" "this" {
-  depends_on           = [talos_machine_bootstrap.this]
-  client_configuration = data.talos_client_configuration.this.client_configuration
-  control_plane_nodes = local.control-plane-ips
-  worker_nodes = local.worker-ips
-  endpoints = [local.control-plane-floating-ips[0]]
-}
+# data "talos_cluster_health" "this" {
+#   depends_on           = [talos_machine_bootstrap.this]
+#   client_configuration = data.talos_client_configuration.this.client_configuration
+#   control_plane_nodes = local.control-plane-ips
+#   worker_nodes = local.worker-ips
+#   endpoints = [local.control-plane-floating-ips[0]]
+# }

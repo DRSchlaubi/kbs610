@@ -23,3 +23,7 @@ variable "kubeconfig" {
 variable "google_project" {
   type = string
 }
+
+variable "cluster_endpoint" {
+  type = string
+}
