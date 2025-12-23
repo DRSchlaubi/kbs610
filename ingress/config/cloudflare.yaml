@@ -16,5 +16,6 @@ metadata:
 spec:
   plugin:
     cloudflare:
-      trustedCIDRs: []
+      # Cloudflare connects via cloudflared
+      trustedCIDRs: ["10.244.0.0/16", "10.32.4.0/22"]
       overwriteRequestHeader: true
