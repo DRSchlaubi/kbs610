@@ -3,3 +3,4 @@ resources:
   - flux-receivers.yaml
   - gateway.yaml
   - whoami.yaml
+  - traefik-dashboard.yaml
