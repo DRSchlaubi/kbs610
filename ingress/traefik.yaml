@@ -55,7 +55,7 @@ spec:
     service:
       type: LoadBalancer
       annotations:
-        loadbalancer.openstack.org/proxy-protocol: "true"
+        loadbalancer.openstack.org/proxy-protocol: "false"
     experimental:
       plugins:
         cloudflare:
@@ -65,10 +65,10 @@ spec:
       web:
         port: 80
         proxyProtocol:
-          enabled: true
+          enabled: false
       websecure:
         port: 443
         http3:
           enabled: false
         proxyProtocol:
-          enabled: true
+          enabled: false
