@@ -14,7 +14,7 @@ resource "google_project_service" "iamcredentials" {
 }
 
 resource "google_iam_workload_identity_pool" "kubernetes" {
-  workload_identity_pool_id = "kubernetes-v2"
+  workload_identity_pool_id = "kubernetes-v4"
 }
 
 resource "google_iam_workload_identity_pool_provider" "kubernetes-oidc" {
@@ -22,7 +22,7 @@ resource "google_iam_workload_identity_pool_provider" "kubernetes-oidc" {
   workload_identity_pool_provider_id = "kubernetes-oidc"
 
   oidc {
-    issuer_uri = data.jwk_from_k8s.this.host
+    issuer_uri = var.cluster_endpoint
     // "jwks" is a list of single key objects, however GCP expects {"keys": [<objects...>]}
     jwks_json = local.jwks
   }
