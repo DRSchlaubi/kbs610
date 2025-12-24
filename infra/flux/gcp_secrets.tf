@@ -89,6 +89,12 @@ resource "kubernetes_manifest" "flux_secrets_kustomization" {
         "name"      = "flux-system"
         "namespace" = "flux-system"
       }
+      "dependsOn" = [
+        {
+          "name" = "flux-system",
+          "namespace" = "flux-system"
+        }
+      ]
       "decryption" = {
         "provider"           = "sops"
         "serviceAccountName" = kubernetes_service_account_v1.secrets-decryptor.metadata[0].name
