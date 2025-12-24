@@ -1,3 +1,4 @@
 resources:
   - kube-system.yaml
   - ingress.yaml
+  - headlamp.yaml
