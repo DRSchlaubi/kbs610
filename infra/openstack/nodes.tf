@@ -23,7 +23,7 @@ data "talos_image_factory_urls" "this" {
   platform      = "openstack"
 }
 
-resource "openstack_images_image_v2" "talos-1116" {
+resource "openstack_images_image_v2" "talos" {
   name             = "Talos"
   image_source_url = data.talos_image_factory_urls.this.urls.disk_image
   container_format = "bare"
@@ -41,7 +41,7 @@ data "openstack_compute_flavor_v2" "m1-large" {
 resource "openstack_compute_instance_v2" "talos-controlplanes" {
   depends_on = [openstack_networking_floatingip_v2.talos-controlplanes]
   name      = "talos-controlplane-${count.index}"
-  image_id  = openstack_images_image_v2.talos-1116.id
+  image_id  = openstack_images_image_v2.talos.id
   flavor_id = data.openstack_compute_flavor_v2.m1-small.id
   count = length(openstack_networking_port_v2.talos-controlplanes)
 
@@ -54,7 +54,7 @@ resource "openstack_compute_instance_v2" "talos-workers" {
   depends_on = [openstack_networking_floatingip_v2.talos-workers]
   count = length(openstack_networking_port_v2.talos-workers)
   name      = "talos-worker-${count.index}"
-  image_id  = openstack_images_image_v2.talos-1116.id
+  image_id  = openstack_images_image_v2.talos.id
   flavor_id = data.openstack_compute_flavor_v2.m1-large.id
 
   network {

@@ -96,10 +96,10 @@ resource "talos_cluster_kubeconfig" "this" {
   node                 = openstack_networking_floatingip_v2.talos-controlplanes[0].address
 }
 
-# data "talos_cluster_health" "this" {
-#   depends_on           = [talos_machine_bootstrap.this]
-#   client_configuration = data.talos_client_configuration.this.client_configuration
-#   control_plane_nodes = local.control-plane-ips
-#   worker_nodes = local.worker-ips
-#   endpoints = [local.control-plane-floating-ips[0]]
-# }
+data "talos_cluster_health" "this" {
+  depends_on           = [talos_machine_bootstrap.this]
+  client_configuration = data.talos_client_configuration.this.client_configuration
+  control_plane_nodes = local.control-plane-ips
+  worker_nodes = local.worker-ips
+  endpoints = [local.control-plane-floating-ips[0]]
+}
