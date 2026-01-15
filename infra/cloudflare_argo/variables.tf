@@ -1,3 +1,8 @@
+variable "worker_count" {
+  type    = number
+  default = 3
+}
+
 variable "cloudflare_account_id" {
   type = string
 }
