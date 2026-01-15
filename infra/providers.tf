@@ -11,6 +11,10 @@ locals {
   }
 }
 
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
 provider "openstack" {
   alias       = "openstack"
   auth_url    = var.openstack_url

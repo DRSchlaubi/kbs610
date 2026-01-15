@@ -51,7 +51,6 @@ resource "google_project_iam_member" "kms_service_agent" {
 }
 
 resource "kubernetes_service_account_v1" "secrets-decryptor" {
-  depends_on = [flux_bootstrap_git.this]
   metadata {
     namespace = "flux-system"
     name      = "secrets-decryptor"
@@ -72,7 +71,7 @@ resource "google_service_account_iam_member" "workload_identity_binding" {
 
 
 resource "kubernetes_manifest" "flux_secrets_kustomization" {
-  depends_on = [flux_bootstrap_git.this, google_service_account_iam_member.workload_identity_binding, google_project_service.iamcredentials]
+  depends_on = [google_service_account_iam_member.workload_identity_binding, google_project_service.iamcredentials]
   manifest = {
     "apiVersion" = "kustomize.toolkit.fluxcd.io/v1"
     "kind"       = "Kustomization"
