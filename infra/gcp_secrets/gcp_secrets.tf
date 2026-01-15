@@ -14,7 +14,8 @@ resource "google_project_service" "iamcredentials" {
 }
 
 resource "google_iam_workload_identity_pool" "kubernetes" {
-  workload_identity_pool_id = "kubernetes-v7"
+  # Deleting just marks them as deleted, but they actually still exist, so we need to rename it each time
+  workload_identity_pool_id = "kubernetes-v8"
 }
 
 resource "google_iam_workload_identity_pool_provider" "kubernetes-oidc" {
