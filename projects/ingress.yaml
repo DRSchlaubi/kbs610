@@ -19,3 +19,5 @@ spec:
   dependsOn:
     - name: kube-system
       namespace: kube-system
+    - name: secrets
+      namespace: flux-system

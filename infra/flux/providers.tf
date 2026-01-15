@@ -3,6 +3,9 @@ terraform {
     flux = {
       source = "fluxcd/flux"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
     jwk = {
       source = "jjacobelli/jwk"
     }

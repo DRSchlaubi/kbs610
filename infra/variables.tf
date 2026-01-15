@@ -2,7 +2,7 @@ variable "controlplane_count" {
   type = number
   default = 3
 }
-  
+
 variable "worker_count" {
   type    = number
   default = 3
@@ -16,13 +16,20 @@ variable "cluster_name" {
 variable "openstack_url" {
   type = string
 }
-variable "openstack_username" {
-  type = string
-}
 variable "openstack_tenant" {
   type = string
 }
-variable "openstack_password" {
+variable "openstack_region" {
+  type = string
+  default = "RegionOne"
+}
+variable "openstack_app_cred_id" {
+  type      = string
+}
+variable "openstack_app_cred_name" {
+  type      = string
+}
+variable "openstack_app_cred_secret" {
   type      = string
   sensitive = true
 }

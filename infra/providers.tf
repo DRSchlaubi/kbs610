@@ -18,9 +18,11 @@ provider "cloudflare" {
 provider "openstack" {
   alias       = "openstack"
   auth_url    = var.openstack_url
-  tenant_name = var.openstack_username
-  user_name   = var.openstack_username
-  password    = var.openstack_password
+  tenant_name = var.openstack_tenant
+  region = var.openstack_region
+  application_credential_name = var.openstack_app_cred_name
+  application_credential_id = var.openstack_app_cred_id
+  application_credential_secret = var.openstack_app_cred_secret
   insecure    = true
 }
 

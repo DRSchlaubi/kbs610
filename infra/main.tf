@@ -25,6 +25,12 @@ module "flux" {
   github_repo  = var.github_repo
   github_token = var.github_token
 
+  openstack_url    = var.openstack_url
+  openstack_tenant = var.openstack_tenant
+  openstack_region = var.openstack_region
+  openstack_app_cred_name = var.openstack_app_cred_name
+  openstack_app_cred_id = var.openstack_app_cred_id
+  openstack_app_cred_secret = var.openstack_app_cred_secret
   providers = { flux = flux.flux }
 }
 
