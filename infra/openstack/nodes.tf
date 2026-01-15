@@ -1,5 +1,5 @@
 data "talos_image_factory_extensions_versions" "this" {
-  talos_version = "v1.12.0"
+  talos_version = "v1.12.1"
   filters = {
     names = ["cloudflared"]
   }
