@@ -1,6 +1,6 @@
 # kbs610
 
-Repo for Cloud Services Project by @7reax, @Schlauer-Hax, @Angry007 and @DRSchlaubi
+Repo for Cloud Services Project by @7reax, @Schlauer-Hax, @Angry007, @Lele1409 and @DRSchlaubi
 
 # Requirements
 - [terraform](https://developer.hashicorp.com/terraform/install)
