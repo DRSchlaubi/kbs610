@@ -1,8 +1,3 @@
-terraform {
-  backend "gcs" {
-    bucket = "kbs610-terraform-state"
-  }
-}
 module "openstack" {
   source       = "./openstack"
   cluster_name = var.cluster_name

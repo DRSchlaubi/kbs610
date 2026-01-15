@@ -1,4 +1,8 @@
 terraform {
+  backend "gcs" {
+    bucket = "kbs610-terraform-state"
+  }
+
   required_providers {
     talos = {
       source  = "siderolabs/talos"
