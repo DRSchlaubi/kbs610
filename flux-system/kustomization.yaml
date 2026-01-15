@@ -1,0 +1,24 @@
+# Ref: https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - gotk-components.yaml
+  - gotk-sync.yaml
+patches:
+  - patch: |
+      # Otherwise the flux pods won't be scheduled since flux is responsible for installing the cloud controller manager
+      - op: add
+        path: /spec/template/spec/tolerations
+        value:
+          - key: "node.cloudprovider.kubernetes.io/uninitialized"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+      # Used by secrets
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --feature-gates=ObjectLevelWorkloadIdentity=true
+    target:
+      kind: Deployment
+      labelSelector: "app.kubernetes.io/part-of=flux"
+---
