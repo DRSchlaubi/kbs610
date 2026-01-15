@@ -71,11 +71,13 @@ spec:
     ports:
       web:
         port: 80
+        nodePort: 30080
         proxyProtocol:
           enabled: true
           trustedIPs: ["10.244.0.0/16"]
       websecure:
         port: 443
+        nodePort: 30443
         http3:
           # LB does not support HTTP/3 yet anyw
           enabled: false
