@@ -2,3 +2,4 @@ resources:
   - kube-system.yaml
   - ingress.yaml
   - headlamp.yaml
+  - kube-prometheus.yaml
