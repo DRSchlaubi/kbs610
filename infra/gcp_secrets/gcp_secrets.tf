@@ -14,7 +14,7 @@ resource "google_project_service" "iamcredentials" {
 }
 
 resource "google_iam_workload_identity_pool" "kubernetes" {
-  workload_identity_pool_id = "kubernetes-v6"
+  workload_identity_pool_id = "kubernetes-v7"
 }
 
 resource "google_iam_workload_identity_pool_provider" "kubernetes-oidc" {
