@@ -1,9 +1,14 @@
 resource "cloudflare_zero_trust_access_identity_provider" "git-ce" {
   config = {
-    claims                     = ["email"]
-    client_id                  = var.oauth_client_id
-    client_secret              = var.oauth_client_secret
-    email_claim_name           = "email"
+    claims           = ["email"]
+    client_id        = var.oauth_client_id
+    client_secret    = var.oauth_client_secret
+    email_claim_name = "email"
+    scopes = [
+      "openid",
+      "email",
+      "profile",
+    ]
 
     auth_url  = "https://git-ce.rwth-aachen.de/oauth/authorize",
     token_url = "https://git-ce.rwth-aachen.de/oauth/token",
