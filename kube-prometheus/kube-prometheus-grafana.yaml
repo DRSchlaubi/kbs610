@@ -1,0 +1,15 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
+metadata:
+  name: grafana
+  namespace: kube-prometheus
+spec:
+  hostnames:
+    - grafana.kbs610.click
+  parentRefs:
+    - name: cloudflare
+      namespace: ingress
+  rules:
+    - backendRefs:
+        - name: kube-prometheus-grafana
+          port: 80

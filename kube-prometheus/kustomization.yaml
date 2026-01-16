@@ -1,3 +1,4 @@
 namespace: kube-prometheus
 resources:
   - kube-prometheus.yaml
+  - kube-prometheus-grafana.yaml
