@@ -9,8 +9,12 @@ locals {
   rendered-cloudflare-config = templatefile("${path.module}/files/cloudflared-config.yaml.tftpl", {
     tunnel_token = var.cloudflare_tunnel_token
   })
+
   rendered-cluster-jwts = templatefile("${path.module}/files/cluster-auth.yaml.tftpl", {
     cluster_endpoint = var.cluster_endpoint
+    control_plane_api_audiences = join(",", [
+      for i in range(length(local.control-plane-floating-ips)) :"https://${local.control-plane-floating-ips[i]}:6443"
+    ])
   })
 }
 
