@@ -7,7 +7,7 @@ spec:
   parentRefs:
     - name: cloudflare
   hostnames:
-    - "traefik.kbs610.click"
+    - "treffi.kbs610.click"
   rules:
     - matches:
         - path:
