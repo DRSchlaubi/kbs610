@@ -31,3 +31,11 @@ variable "openstack_app_cred_secret" {
   type      = string
   sensitive = true
 }
+
+variable "cloudflare_account_id" {
+  type = string
+}
+
+variable "cloudflare_tunnel_id" {
+  type = string
+}

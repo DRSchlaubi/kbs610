@@ -9,5 +9,8 @@ terraform {
     jwk = {
       source = "jjacobelli/jwk"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+    }
   }
 }

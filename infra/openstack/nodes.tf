@@ -29,6 +29,10 @@ resource "openstack_images_image_v2" "talos" {
   container_format = "bare"
   disk_format      = "raw"
   decompress       = "true"
+
+  lifecycle {
+    ignore_changes = [image_source_url]
+  }
 }
 
 data "openstack_compute_flavor_v2" "m1-small" {
