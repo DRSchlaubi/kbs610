@@ -2,5 +2,6 @@ resources:
   - kube-system.yaml
   - operators.yaml
   - ingress.yaml
+  - trainy.yaml
   - headlamp.yaml
   - kube-prometheus.yaml
