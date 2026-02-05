@@ -1,3 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dragonfly
+  labels:
+    name: dragonfly
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
