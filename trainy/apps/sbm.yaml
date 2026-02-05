@@ -1,0 +1,154 @@
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: trainy-sbm-dragonfly
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/instance: trainy-sbm-dragonfly
+    app.kubernetes.io/part-of: dragonfly-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dragonfly-operator
+spec:
+  replicas: 3
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.31.0
+  args:
+    - "--bind"
+    - "::"
+    - "--admin_bind"
+    - "::"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 600m
+      memory: 750Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sbm-collector
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trainy-sbm-collector
+  template:
+    metadata:
+      labels:
+        app: trainy-sbm-collector
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: trainy-sbm
+          image: ghcr.io/trainyapp/geops-sbm:main
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy-sbm
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy-sbm
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: trainy-sbm
+          env:
+            - name: REDIS_URL
+              value: redis://trainy-sbm-dragonfly/0
+            - name: LOG_LEVEL
+              value: TRACE
+            - name: GEOPS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: geopsKey
+                  name: trainy
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sbm
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trainy-sbm
+  template:
+    metadata:
+      labels:
+        app: trainy-sbm
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: trainy-sbm
+          image: ghcr.io/trainyapp/geops-sbm:main
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy-sbm
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy-sbm
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: trainy-sbm
+          env:
+            - name: REDIS_URL
+              value: redis://trainy-sbm-dragonfly/0
+            - name: LOG_LEVEL
+              value: TRACE
+            - name: GEOPS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: geopsKey
+                  name: trainy
+            - name: RUN_CRAWLER
+              value: "false"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainy-sbm-service
+spec:
+  selector:
+    app: trainy-sbm
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: trainy-sbm
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: trainy-sbm
+  namespace: default
+  annotations:
+    cert-manager.io/issuer: cloudflare
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    traefik.ingress.kubernetes.io/router.middlewares: default-cloudflare-proxy@kubernetescrd
+spec:
+  tls:
+    - hosts:
+        - sbm-positions.kbs610.click
+      secretName: sbm-tls
+  rules:
+    - host: sbm-positions.kbs610.click
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: trainy-sbm-service
+                port:
+                  number: 8080

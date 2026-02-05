@@ -1,0 +1,138 @@
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: trainy
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "push"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: GitRepository
+      name: trainy
+---
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: trainy-backend
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "registry_package.published"
+    - "registry_package"
+    - "package"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: ImageRepository
+      name: trainy-backend
+      namespace: trainy
+    - kind: ImageRepository
+      name: trainy-worker
+      namespace: trainy
+    - kind: ImageRepository
+      name: trainy-backend
+      namespace: trainy-staging
+    - kind: ImageRepository
+      name: trainy-worker
+      namespace: trainy-staging
+---
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: trainy-pro
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "registry_package.published"
+    - "registry_package"
+    - "package"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: ImageRepository
+      name: trainy-pro
+      namespace: trainy
+---
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: de-stations
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "registry_package.published"
+    - "registry_package"
+    - "package"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: ImageRepository
+      name: de-stations
+      namespace: trainy
+---
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: trainy-web
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "registry_package.published"
+    - "registry_package"
+    - "package"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: ImageRepository
+      name: trainy-web
+      namespace: trainy
+---
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: untitled2
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "registry_package.published"
+    - "registry_package"
+    - "package"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: ImageRepository
+      name: untitled2
+      namespace: trainy
+---
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: glaskugel
+  namespace: trainy
+spec:
+  type: github
+  events:
+    - "ping"
+    - "registry_package.published"
+    - "registry_package"
+    - "package"
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: ImageRepository
+      name: glaskugel
+      namespace: trainy

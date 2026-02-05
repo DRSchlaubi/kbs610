@@ -1,0 +1,154 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: de-stations-postgres
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  primaryUpdateMethod: switchover
+  primaryUpdateStrategy: unsupervised
+  #  bootstrap:
+  #    recovery:
+  #      source: de-stations-postgres
+  externalClusters:
+    - name: de-stations-postgres
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        isWALArchiver: true
+        parameters:
+          barmanObjectName: schlaubi-backups-v7
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: schlaubi-backups-v7
+  storage:
+    size: 1Gi
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: de-stations
+spec:
+  schedule: "@hourly"
+  backupOwnerReference: self
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+  cluster:
+    name: de-stations-postgres
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: de-stations
+spec:
+  image: ghcr.io/trainyapp/germany-stations
+  interval: 5m
+  secretRef:
+    name: ghcr
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: de-stations
+  namespace: default
+spec:
+  interval: 1h
+  imageRepositoryRef:
+    name: de-stations
+  digestReflectionPolicy: Always
+  filterTags:
+    pattern: '^main-(?P<BUILD>[0-9]+)'
+    extract: '$BUILD'
+  policy:
+    numerical:
+      order: asc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainy-de-stations
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trainy-de-stations
+  template:
+    metadata:
+      labels:
+        app: trainy-de-stations
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: trainy-de-stations
+          image: ghcr.io/trainyapp/germany-stations:main-26@sha256:9d84fa05df07f6c527dd1758acf9212a5d894871eb39e3c311a865f91a43da35 # {"$imagepolicy": "trainy:de-stations"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: trainy
+            - containerPort: 9000
+              name: metrics
+          env:
+            - name: POSTGRES_URI
+              valueFrom:
+                secretKeyRef:
+                  name: de-stations-postgres-app
+                  key: jdbc-uri
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: de-stations-postgres-app
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: de-stations-postgres-app
+                  key: password
+            - name: LOG_LEVEL
+              value: DEBUG
+          envFrom:
+            - secretRef:
+                name: trainy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainy-de-stations
+spec:
+  selector:
+    app: trainy-de-stations
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: trainy
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: trainy-de-stations
+  namespace: default
+  annotations:
+    cert-manager.io/issuer: cloudflare
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    traefik.ingress.kubernetes.io/router.middlewares: default-cloudflare-proxy@kubernetescrd
+spec:
+  tls:
+    - hosts:
+        - de-stations.kbs610.click
+      secretName: de-stations-tls
+  rules:
+    - host: de-stations.kbs610.click
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: trainy-de-stations
+                port:
+                  number: 8080

@@ -1,0 +1,111 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: compression
+spec:
+  compress:
+    defaultEncoding: br
+    encodings:
+      - br
+      - gzip
+      - zstd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainy-web
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trainy-web
+  template:
+    metadata:
+      labels:
+        app: trainy-web
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: trainy
+          image: ghcr.io/trainyapp/trainy-web:main-196@sha256:48f29cf2dc75a44afd03aec79e3016ec9a207c62410d2c5f21686c6955843e7c # {"$imagepolicy": "trainy:trainy-web"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: trainy-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainy-web-service
+spec:
+  ipFamilies:
+    - IPv4
+  selector:
+    app: trainy-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: trainy-web
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: trainy-web
+  namespace: default
+  annotations:
+    cert-manager.io/issuer: cloudflare
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    traefik.ingress.kubernetes.io/router.middlewares: trainy-compression@kubernetescrd,default-cloudflare-proxy@kubernetescrd
+spec:
+  rules:
+    - host: kbs610.click
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: trainy-web-service
+                port:
+                  number: 80
+    - host: www.kbs610.click
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: trainy-web-service
+                port:
+                  number: 80
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: trainy-web
+spec:
+  image: ghcr.io/trainyapp/trainy-web
+  interval: 5m
+  secretRef:
+    name: ghcr
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: trainy-web
+  namespace: trainy
+spec:
+  interval: 1h
+  imageRepositoryRef:
+    name: trainy-web
+  digestReflectionPolicy: Always
+  filterTags:
+    pattern: "^main-(?P<BUILD>[0-9]+)"
+    extract: '$BUILD'
+  policy:
+    numerical:
+      order: asc
