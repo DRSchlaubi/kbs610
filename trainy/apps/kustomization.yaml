@@ -1,12 +1,6 @@
 namespace: trainy
 resources:
-  - anschluss.yaml
   - de-stations.yaml
-  - glaskugel.yaml
-  - pro.yaml
-  - proxy.yaml
   - sbm.yaml
-  - trainy-runners.yaml
-  - untitled2.yaml
   - website.yaml
   - repo-triggers.yaml
