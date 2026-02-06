@@ -52,6 +52,7 @@ resource "talos_machine_configuration_apply" "control-planes" {
 
   config_patches = [
     file("${path.module}/files/enable-cloud-provider.yaml"),
+    file("${path.module}/files/enable-swap.yaml"),
     local.rendered-cluster-jwts,
     yamlencode({
       machine = {
