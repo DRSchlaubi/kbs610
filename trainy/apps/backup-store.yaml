@@ -1,0 +1,19 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: s3-backups
+  namespace: trainy
+spec:
+  retentionPolicy: "7d"
+  configuration:
+    destinationPath: s3://trainy-backups
+    endpointURL: https://10.32.4.25/
+    s3Credentials:
+      accessKeyId:
+        key: AWS_ACCESS_KEY_ID
+        name: s3-credentials
+      secretAccessKey:
+        key: AWS_SECRET_ACCESS_KEY
+        name: s3-credentials
+    wal:
+      compression: gzip

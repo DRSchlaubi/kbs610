@@ -1,5 +1,6 @@
 namespace: trainy
 resources:
+  - backup-store.yaml
   - de-stations.yaml
   - sbm.yaml
   - website.yaml
