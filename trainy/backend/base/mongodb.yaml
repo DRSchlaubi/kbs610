@@ -3,8 +3,8 @@ kind: PerconaServerMongoDB
 metadata:
   name: trainy-db
 spec:
-#  backup:
-#    enabled: true
+  backup:
+    enabled: false
 #    image: percona/percona-backup-mongodb:2
 #    storages:
 #      s3-backup:
