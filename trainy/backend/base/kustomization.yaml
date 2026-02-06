@@ -1,0 +1,8 @@
+resources:
+  - mongodb.yaml
+  - dragonfly.yaml
+  - rabbitmq.yaml
+  - backend.yaml
+  - worker.yaml
+  - image-update-policies.yaml
+  - image-update-automation.yaml

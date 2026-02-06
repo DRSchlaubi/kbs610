@@ -1,0 +1,25 @@
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: trainy-dragonfly
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/instance: trainy-sbm-dragonfly
+    app.kubernetes.io/part-of: dragonfly-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dragonfly-operator
+spec:
+  replicas: 3
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.31.0
+  args:
+    - "--bind"
+    - "::"
+    - "--admin_bind"
+    - "::"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 600m
+      memory: 750Mi

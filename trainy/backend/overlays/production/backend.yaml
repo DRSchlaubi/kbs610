@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainy
+# patch for base/backend.yaml
+# noinspection KubernetesMissingKeys
+spec:
+  template:
+    spec:
+      containers:
+        - name: trainy
+          env:
+            - name: HOST
+              value: 0.0.0.0
+            - name: MONGO_URL
+              value: mongodb+srv://trainy-db-rs0.trainy.svc.cluster.local/admin?replicaSet=rs0&ssl=false
+            - name: MONGO_USERNAME
+              value: trainy
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: trainy
+                  name: trainy-db-custom-user-secret
+            - name: MONGO_AUTH_DATABASE
+              value: admin
+            - name: MONGO_DATABASE
+              value: trainy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainy-worker
+  namespace: default
+# overlay for base/backend.yaml
+# noinspection KubernetesMissingKeys
+spec:
+  template:
+    spec:
+      containers:
+        - name: trainy
+          env:
+            - name: MONGO_URL
+              value: mongodb+srv://trainy-db-rs0.trainy.svc.cluster.local/admin?replicaSet=rs0&ssl=false
+            - name: MONGO_USERNAME
+              value: trainy
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: trainy
+                  name: trainy-db-custom-user-secret
+            - name: MONGO_AUTH_DATABASE
+              value: admin
+            - name: LOG_LEVEL
+              value: DEBUG

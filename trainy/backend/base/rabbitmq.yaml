@@ -1,0 +1,26 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: trainy-queue
+spec:
+  image: ghcr.io/trainyapp/rabbitmq:sha-3f5cd45
+  replicas: 3
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            topologySpreadConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: DoNotSchedule
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: trainy-queue
+            containers:
+              - name: rabbitmq
+  rabbitmq:
+    additionalConfig: |
+      management.listener.ip = ::
+    additionalPlugins:
+      - rabbitmq_delayed_message_exchange

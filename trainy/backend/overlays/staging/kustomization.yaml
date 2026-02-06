@@ -1,0 +1,33 @@
+namespace: trainy-staging
+resources:
+  - ../../base
+replicas:
+  - count: 1
+    name: trainy
+  - count: 1
+    name: trainy-worker
+patches:
+  - path: backend.yaml
+  - target:
+      kind: HTTPRoute
+      name: trainy
+    patch: |-
+      - op: replace
+        path: /spec/hostnames/0
+        value: sr.trainy.app
+  - target:
+      kind: ImagePolicy
+    patch: |-
+      - op: add
+        path: /spec/filterTags/pattern
+        value: "^staging-(?P<BUILD>.*)"
+  - target:
+      kind: PerconaServerMongoDB
+    patch: |-
+      - op: remove
+        path: /spec/backup
+images:
+  - name: ghcr.io/trainyapp/trainy-backend
+    digest: sha256:e9681074228fc2527c55a482d8ce89646c16b927bf742ea79032d06f8b28e47a # {"$imagepolicy": "trainy-staging:trainy-backend:digest"}
+  - name: ghcr.io/trainyapp/trainy-backend/worker
+    digest: sha256:35ce1f47dacc4ed5d6ead68c36d0c2eb024fe690b2b1d2e168cd6190179b1dda # {"$imagepolicy": "trainy-staging:trainy-worker:digest"}

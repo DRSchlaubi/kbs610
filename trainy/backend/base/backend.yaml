@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trainy
+  template:
+    metadata:
+      labels:
+        app: trainy
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: trainy
+      containers:
+        - name: trainy
+          image: ghcr.io/trainyapp/trainy-backend:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy
+          livenessProbe:
+            periodSeconds: 20
+            httpGet:
+              path: /healthz
+              port: trainy
+          ports:
+            - containerPort: 8080
+              name: trainy
+            - containerPort: 5005
+              name: jdi
+          envFrom:
+            - secretRef:
+                name: trainy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainy-service
+spec:
+  selector:
+    app: trainy
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: trainy
+  type: ClusterIP
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
+metadata:
+  name: trainy
+spec:
+  parentRefs:
+    - name: cloudflare
+      namespace: trainy
+  hostnames:
+    - "rbc.kbs610.click"
+  rules:
+    - backendRefs:
+        - name: trainy-service
+          port: 8080
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: cloudflare-proxy

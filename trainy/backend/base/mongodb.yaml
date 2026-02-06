@@ -1,0 +1,61 @@
+apiVersion: psmdb.percona.com/v1
+kind: PerconaServerMongoDB
+metadata:
+  name: trainy-db
+spec:
+#  backup:
+#    enabled: true
+#    image: percona/percona-backup-mongodb:2
+#    storages:
+#      s3-backup:
+#        main: true
+#        s3:
+#          bucket: trainy-backups
+#          credentialsSecret: s3-credentials
+#          endpointUrl: https://nbg1.your-objectstorage.com
+#          region: us-east-1 # is unused, but percona backup fails if not specified
+#        type: s3
+#    tasks:
+#      - enabled: true
+#        retention:
+#          deleteFromStorage: true
+#          type: count
+#          count: 14
+#        name: daily-backup
+#        schedule: 0 2 * * *
+#        type: incremental-base
+#        storageName: s3-backup
+#      - enabled: true
+#        retention:
+#          deleteFromStorage: true
+#          type: count
+#          count: 12
+#        name: hourly-backup
+#        schedule: "0 * * * *"
+#        type: incremental
+#        storageName: s3-backup
+#      - enabled: true
+#        retention:
+#          deleteFromStorage: true
+#          type: count
+#          count: 4
+#        name: weekly-full-backup
+#        schedule: "0 0 * * 0"
+#        type: logical
+#        storageName: s3-backup
+  image: percona/percona-server-mongodb:8.0
+  replsets:
+    - name: rs0
+      size: 3
+      volumeSpec:
+        persistentVolumeClaim:
+          resources:
+            requests:
+              storage: 10Gi
+  users:
+    - name: trainy
+      roles:
+        - db: trainy
+          name: dbOwner
+  secrets:
+    users: trainy-db

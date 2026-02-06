@@ -1,0 +1,16 @@
+namespace: trainy
+resources:
+  - ../../base
+patches:
+  - path: backend.yaml
+  - target:
+      kind: ImagePolicy
+    patch: |-
+      - op: add
+        path: /spec/filterTags/pattern
+        value: "^main-(?P<BUILD>.*)"
+images:
+  - name: ghcr.io/trainyapp/trainy-backend
+    digest: sha256:7754ecb85c1a618b152b4499a87eef8c7a7339de174d45e37dea1674b0d437fb # {"$imagepolicy": "trainy:trainy-backend:digest"}
+  - name: ghcr.io/trainyapp/trainy-backend/worker
+    digest: sha256:247402a98a84c327bc0354110d058e2c7665348447a07bd89110fa85ea4e6bb3 # {"$imagepolicy": "trainy:trainy-worker:digest"}

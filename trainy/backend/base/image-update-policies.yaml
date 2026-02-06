@@ -1,0 +1,51 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: trainy-backend
+spec:
+  image: ghcr.io/trainyapp/trainy-backend
+  interval: 5m
+  secretRef:
+    name: ghcr
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: trainy-worker
+spec:
+  image: ghcr.io/trainyapp/trainy-backend/worker
+  interval: 5m
+  secretRef:
+    name: ghcr
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: trainy-backend
+  namespace: trainy
+spec:
+  interval: 1h
+  imageRepositoryRef:
+    name: trainy-backend
+  digestReflectionPolicy: Always
+  filterTags:
+    extract: '$BUILD'
+  policy:
+    numerical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: trainy-worker
+  namespace: trainy
+spec:
+  interval: 1h
+  imageRepositoryRef:
+    name: trainy-worker
+  digestReflectionPolicy: Always
+  filterTags:
+    extract: '$BUILD'
+  policy:
+    numerical:
+      order: asc

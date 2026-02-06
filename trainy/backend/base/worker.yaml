@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainy-worker
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trainy-worker
+  template:
+    metadata:
+      labels:
+        app: trainy-worker
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: trainy-worker
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: trainy
+          image: ghcr.io/trainyapp/trainy-backend/worker:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: trainy
+          ports:
+            - containerPort: 8081
+              name: trainy
+          envFrom:
+            - secretRef:
+                name: trainy
+          env:
+            - name: MONGO_URL
+              value: mongodb+srv://trainy-db-rs0/admin?replicaSet=rs0&ssl=false
+            - name: MONGO_USERNAME
+              value: trainy
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: trainy
+                  name: trainy-db-custom-user-secret
+            - name: MONGO_AUTH_DATABASE
+              value: admin
+            - name: LOG_LEVEL
+              value: DEBUG
