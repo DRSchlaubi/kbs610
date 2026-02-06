@@ -16,12 +16,12 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         isWALArchiver: true
         parameters:
-          barmanObjectName: schlaubi-backups-v7
+          barmanObjectName: s3-backups
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName: schlaubi-backups-v7
+        barmanObjectName: s3-backups
   storage:
     size: 1Gi
 ---
