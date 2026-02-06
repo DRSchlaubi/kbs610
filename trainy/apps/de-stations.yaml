@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: de-stations-postgres
 spec:
-  instances: 3
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:18
   primaryUpdateMethod: switchover
   primaryUpdateStrategy: unsupervised
