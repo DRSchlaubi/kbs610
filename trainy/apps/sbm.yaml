@@ -16,13 +16,6 @@ spec:
     - "::"
     - "--admin_bind"
     - "::"
-  resources:
-    requests:
-      cpu: 500m
-      memory: 500Mi
-    limits:
-      cpu: 600m
-      memory: 750Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
