@@ -1,0 +1,40 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: mittwald
+  namespace: kube-system
+spec:
+  interval: 24h
+  url: https://helm.mittwald.de
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: kubernetes-replicator
+  namespace: kube-system
+spec:
+  interval: 24h
+  chart: kubernetes-replicator
+  sourceRef:
+    kind: HelmRepository
+    name: mittwald
+  version: 2.x
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubernetes-replicator
+  namespace: kube-system
+spec:
+  interval: 12h
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 2m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 3m
+  chartRef:
+    kind: HelmChart
+    name: kubernetes-replicator
