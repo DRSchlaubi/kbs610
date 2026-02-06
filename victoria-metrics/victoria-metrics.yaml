@@ -2,7 +2,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: vm
-  namespace: victoria-metrics
 spec:
   interval: 24h
   url: https://victoriametrics.github.io/helm-charts/
@@ -11,7 +10,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmChart
 metadata:
   name: victoria-metrics-k8s-stack
-  namespace: victoria-metrics
 spec:
   interval: 24h
   chart: victoria-metrics-k8s-stack
@@ -24,7 +22,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmChart
 metadata:
   name: victoria-logs-single
-  namespace: victoria-metrics
 spec:
   interval: 24h
   chart: victoria-logs-single
@@ -37,7 +34,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: victoria-metrics-k8s-stack
-  namespace: victoria-metrics
 spec:
   interval: 12h
   install:
@@ -77,7 +73,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: victoria-logs-single
-  namespace: victoria-metrics
 spec:
   interval: 12h
   install:
@@ -101,7 +96,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: victoria-logs-collector
-  namespace: victoria-metrics
 spec:
   interval: 12h
   install:
@@ -130,7 +124,6 @@ kind: GrafanaDatasource
 apiVersion: grafana.integreatly.org/v1beta1
 metadata:
   name: victoria-logs
-  namespace: victoria-metrics
 spec:
   plugins:
     - name: victoriametrics-logs-datasource
