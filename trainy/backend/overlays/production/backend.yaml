@@ -25,6 +25,8 @@ spec:
               value: admin
             - name: MONGO_DATABASE
               value: trainy
+            - name: ENVIRONMENT
+              value: DEVELOPMENT
             - name: RABBITMQ_URI
               valueFrom:
                 secretKeyRef:

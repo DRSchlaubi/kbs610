@@ -27,6 +27,8 @@ spec:
               value: trainy
             - name: LOG_LEVEL
               value: TRACE
+            - name: ENVIRONMENT
+              value: DEVELOPMENT
             - name: RABBITMQ_URI
               valueFrom:
                 secretKeyRef:
