@@ -44,4 +44,4 @@ spec:
       api_url: "https://git-ce.rwth-aachen.de/oauth/userinfo"
       org_role: "true"
     auth.basic:
-      enabled: "false"
+      enabled: "true"
