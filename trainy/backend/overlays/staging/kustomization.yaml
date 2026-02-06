@@ -14,7 +14,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/hostnames/0
-        value: sr.trainy.app
+        value: sr.kbs610.click
   - target:
       kind: ImagePolicy
     patch: |-
