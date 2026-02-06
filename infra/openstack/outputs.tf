@@ -15,3 +15,8 @@ output "kubeconfig" {
   value = talos_cluster_kubeconfig.this
   sensitive = true
 }
+
+output "ec2_key" {
+  value = openstack_identity_ec2_credential_v3.this
+  sensitive = true
+}

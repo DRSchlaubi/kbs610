@@ -32,10 +32,11 @@ module "flux" {
   openstack_app_cred_id = var.openstack_app_cred_id
   openstack_app_cred_secret = var.openstack_app_cred_secret
 
-
   providers = { flux = flux.flux, cloudflare = cloudflare }
   cloudflare_account_id = var.cloudflare_account_id
   cloudflare_tunnel_id  = module.cloudflare_argo.cf_tunnel_id
+
+  ec2_key = module.openstack.ec2_key
 }
 
 module "gcp_secrets" {

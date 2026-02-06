@@ -39,3 +39,11 @@ variable "cloudflare_account_id" {
 variable "cloudflare_tunnel_id" {
   type = string
 }
+
+variable "ec2_key" {
+  type = object({
+    id = string
+    secret = string
+  })
+  sensitive = true
+}
