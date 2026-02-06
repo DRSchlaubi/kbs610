@@ -25,6 +25,11 @@ spec:
               value: admin
             - name: MONGO_DATABASE
               value: trainy
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: trainy-queue-default-user
+                  key: connection_string
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -52,3 +57,8 @@ spec:
               value: admin
             - name: LOG_LEVEL
               value: DEBUG
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: trainy-queue-default-user
+                  key: connection_string
