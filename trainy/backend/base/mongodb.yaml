@@ -5,7 +5,7 @@ metadata:
 spec:
   backup:
     enabled: false
-#    image: percona/percona-backup-mongodb:2
+    image: percona/percona-backup-mongodb:2
 #    storages:
 #      s3-backup:
 #        main: true
