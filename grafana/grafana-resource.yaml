@@ -33,15 +33,15 @@ spec:
       root_url: "https://grafana.kbs610.click"
     auth:
       disable_login_form: "true"
-      generic_oauth:
-        enabled: "true"
-        name: "OIDC"
-        use_pkce: "true"
-        client_id: "d1f906c9bb8bc1278e9306918fedb1a51d6ad765bb182387c74632e6d8d796c3"
-        scopes: "openid email profile"
-        auth_url: "https://git-ce.rwth-aachen.de/oauth/authorize"
-        token_url: "https://git-ce.rwth-aachen.de/oauth/token"
-        api_url: "https://git-ce.rwth-aachen.de/oauth/userinfo"
-        org_role: "true"
-      basic:
-        enabled: "false"
+    auth.generic_oauth:
+      enabled: "true"
+      name: "OIDC"
+      use_pkce: "true"
+      client_id: "d1f906c9bb8bc1278e9306918fedb1a51d6ad765bb182387c74632e6d8d796c3"
+      scopes: "openid email profile"
+      auth_url: "https://git-ce.rwth-aachen.de/oauth/authorize"
+      token_url: "https://git-ce.rwth-aachen.de/oauth/token"
+      api_url: "https://git-ce.rwth-aachen.de/oauth/userinfo"
+      org_role: "true"
+    auth.basic:
+      enabled: "false"
