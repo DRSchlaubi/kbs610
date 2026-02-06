@@ -1,0 +1,147 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: vm
+  namespace: victoria-metrics
+spec:
+  interval: 24h
+  url: https://victoriametrics.github.io/helm-charts/
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: victoria-metrics-k8s-stack
+  namespace: victoria-metrics
+spec:
+  interval: 24h
+  chart: victoria-metrics-k8s-stack
+  sourceRef:
+    kind: HelmRepository
+    name: vm
+  version: 0.x
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: victoria-logs-single
+  namespace: victoria-metrics
+spec:
+  interval: 24h
+  chart: victoria-logs-single
+  sourceRef:
+    kind: HelmRepository
+    name: vm
+  version: 0.x
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-metrics-k8s-stack
+  namespace: victoria-metrics
+spec:
+  interval: 12h
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 2m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 3m
+  chartRef:
+    kind: HelmChart
+    name: victoria-metrics-k8s-stack
+  values:
+    defaultDashboards:
+      enabled: true
+      grafanaOperator:
+        enabled: true
+        spec:
+          instanceSelector:
+            matchLabels:
+              kustomize.toolkit.fluxcd.io/name: grafana
+          allowCrossNamespaceImport: true
+    defaultDatasources:
+      grafanaOperator:
+        enabled: true
+        spec:
+          instanceSelector:
+            matchLabels:
+              kustomize.toolkit.fluxcd.io/name: grafana
+          allowCrossNamespaceImport: true
+    grafana:
+      enabled: false
+      forceDeployDatasource: true
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs-single
+  namespace: victoria-metrics
+spec:
+  interval: 12h
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 2m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 3m
+  chartRef:
+    kind: HelmChart
+    name: victoria-logs-single
+  values:
+    vector:
+      enabled: true
+      persistence:
+        enabled: true
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs-collector
+  namespace: victoria-metrics
+spec:
+  interval: 12h
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 2m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 3m
+  chartRef:
+    kind: HelmChart
+    name: victoria-logs-single
+  values:
+    remoteWrite:
+      - url: http://victoria-logs-single-server:9428
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+---
+kind: GrafanaDatasource
+apiVersion: grafana.integreatly.org/v1beta1
+metadata:
+  name: victoria-logs
+  namespace: victoria-metrics
+spec:
+  plugins:
+    - name: victoriametrics-logs-datasource
+      version: 0.23.5
+  datasource:
+    name: VictoriaLogs
+    type: victoriametrics-logs-datasource
+    access: proxy
+    url: http://victoria-logs-single-server.victoria-metrics.svc.cluster.local.:9428
+    isDefault: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  allowCrossNamespaceImport: true
