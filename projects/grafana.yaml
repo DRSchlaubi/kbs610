@@ -1,0 +1,16 @@
+kind: Kustomization
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+metadata:
+  name: grafana
+  namespace: grafana
+spec:
+  interval: 5m
+  path: infrastructure/grafana
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: operators
+      namespace: operators

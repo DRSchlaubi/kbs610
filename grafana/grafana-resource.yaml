@@ -1,0 +1,43 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  namespace: grafana
+  labels:
+    dashboards: grafana
+spec:
+  ingress:
+    metadata:
+      annotations:
+        cert-manager.io/cluster-issuer: gts
+    spec:
+      rules:
+        - host: grafana.kbs610.click
+          http:
+            paths:
+              - pathType: Prefix
+                path: /
+                backend:
+                  service:
+                    name: grafana-service
+                    port:
+                      number: 3000
+      tls:
+        - hosts:
+            - grafana.kbs610.click
+          secretName: grafana-tls
+  config:
+    log:
+      level: debug
+    server:
+      root_url: "https://grafana.kbs610.click"
+    auth.generic_oauth:
+      enabled: "true"
+      name: "OIDC"
+      use_pkce: "true"
+      client_id: "d1f906c9bb8bc1278e9306918fedb1a51d6ad765bb182387c74632e6d8d796c3"
+      scopes: "openid email profile"
+      auth_url: "https://git-ce.rwth-aachen.de/oauth/authorize"
+      token_url: "https://git-ce.rwth-aachen.de/oauth/token"
+      api_url: "https://git-ce.rwth-aachen.de/oauth/userinfo"
+      org_role: "true"
