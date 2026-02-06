@@ -35,8 +35,8 @@ resource "openstack_images_image_v2" "talos" {
   }
 }
 
-data "openstack_compute_flavor_v2" "m1-small" {
-  name = "m1.small"
+data "openstack_compute_flavor_v2" "m1-medium" {
+  name = "m1.medium"
 }
 data "openstack_compute_flavor_v2" "m1-large" {
   name = "m1.large"
@@ -46,7 +46,7 @@ resource "openstack_compute_instance_v2" "talos-controlplanes" {
   depends_on = [openstack_networking_floatingip_v2.talos-controlplanes]
   name      = "talos-controlplane-${count.index}"
   image_id  = openstack_images_image_v2.talos.id
-  flavor_id = data.openstack_compute_flavor_v2.m1-small.id
+  flavor_id = data.openstack_compute_flavor_v2.m1-medium.id
   count = length(openstack_networking_port_v2.talos-controlplanes)
 
   network {
