@@ -1,0 +1,22 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: victoria-metrics
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: victoria-metrics
+  namespace: victoria-metrics
+spec:
+  interval: 10m0s
+  path: ./victoria-metrics
+  prune: true
+  dependsOn:
+    # requires gateway API to be installed
+    - name: ingress
+      namespace: ingress
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system

@@ -5,3 +5,4 @@ resources:
   - trainy.yaml
   - headlamp.yaml
   - grafana.yaml
+  - victoria-metrics.yaml
