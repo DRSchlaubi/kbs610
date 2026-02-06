@@ -43,5 +43,6 @@ spec:
       token_url: "https://git-ce.rwth-aachen.de/oauth/token"
       api_url: "https://git-ce.rwth-aachen.de/oauth/userinfo"
       org_role: "true"
+      role_attribute_path: "contains(groups[*], 'kbs610') && 'Admin' || 'Viewer'"
     auth.basic:
       enabled: "true"
