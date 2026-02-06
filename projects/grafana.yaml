@@ -5,7 +5,7 @@ metadata:
   namespace: grafana
 spec:
   interval: 5m
-  path: infrastructure/grafana
+  path: ./grafana
   prune: true
   sourceRef:
     kind: GitRepository
