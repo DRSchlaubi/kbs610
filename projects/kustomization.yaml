@@ -5,3 +5,4 @@ resources:
   - trainy.yaml
   - headlamp.yaml
   - kube-prometheus.yaml
+  - grafana.yaml
