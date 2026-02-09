@@ -126,29 +126,17 @@ spec:
       targetPort: trainy
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
 metadata:
-  name: trainy-de-stations
-  namespace: default
-  annotations:
-    cert-manager.io/issuer: cloudflare
-    cert-manager.io/issuer-kind: ClusterOriginIssuer
-    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    traefik.ingress.kubernetes.io/router.middlewares: default-cloudflare-proxy@kubernetescrd
+  name: de-stations
 spec:
-  tls:
-    - hosts:
-        - de-stations.kbs610.click
-      secretName: de-stations-tls
+  parentRefs:
+    - name: cloudflare
+      namespace: ingress
+  hostnames:
+    - "de-stations.trainy.app"
   rules:
-    - host: de-stations.kbs610.click
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: trainy-de-stations
-                port:
-                  number: 8080
+    - backendRefs:
+        - name: trainy-de-stations
+          port: 8080

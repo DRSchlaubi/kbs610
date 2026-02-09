@@ -119,29 +119,17 @@ spec:
       targetPort: trainy-sbm
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
 metadata:
-  name: trainy-sbm
-  namespace: default
-  annotations:
-    cert-manager.io/issuer: cloudflare
-    cert-manager.io/issuer-kind: ClusterOriginIssuer
-    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    traefik.ingress.kubernetes.io/router.middlewares: default-cloudflare-proxy@kubernetescrd
+  name: headlamp
 spec:
-  tls:
-    - hosts:
-        - sbm-positions.kbs610.click
-      secretName: sbm-tls
+  hostnames:
+    - sbm-positions.kbs610.click
+  parentRefs:
+    - name: cloudflare
+      namespace: ingress
   rules:
-    - host: sbm-positions.kbs610.click
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: trainy-sbm-service
-                port:
-                  number: 8080
+    - backendRefs:
+        - name: trainy-sbm-service
+          port: 8080

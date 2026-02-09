@@ -63,7 +63,7 @@ metadata:
 spec:
   parentRefs:
     - name: cloudflare
-      namespace: trainy
+      namespace: ingress
   hostnames:
     - "rbc.kbs610.click"
   rules:

@@ -50,38 +50,21 @@ spec:
       targetPort: trainy-web
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
 metadata:
-  name: trainy-web
-  namespace: default
-  annotations:
-    cert-manager.io/issuer: cloudflare
-    cert-manager.io/issuer-kind: ClusterOriginIssuer
-    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    traefik.ingress.kubernetes.io/router.middlewares: trainy-compression@kubernetescrd,default-cloudflare-proxy@kubernetescrd
+  name: website
 spec:
+  hostnames:
+    - kbs610.click
+    - www.kbs610.click
+  parentRefs:
+    - name: cloudflare
+      namespace: ingress
   rules:
-    - host: kbs610.click
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: trainy-web-service
-                port:
-                  number: 80
-    - host: www.kbs610.click
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: trainy-web-service
-                port:
-                  number: 80
+    - backendRefs:
+        - name: trainy-web-service
+          port: 80
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
