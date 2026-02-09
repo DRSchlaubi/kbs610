@@ -13,6 +13,7 @@ spec:
           bucket: trainy-backup-container-1
           credentialsSecret: s3-credentials
           endpointUrl: https://10.32.4.25/
+          insecure: true
         type: s3
     tasks:
       - enabled: true
