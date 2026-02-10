@@ -2,6 +2,8 @@ kind: Namespace
 apiVersion: v1
 metadata:
   name: victoria-metrics
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
