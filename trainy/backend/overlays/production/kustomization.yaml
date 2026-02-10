@@ -11,6 +11,6 @@ patches:
         value: "^main-(?P<BUILD>.*)"
 images:
   - name: ghcr.io/trainyapp/trainy-backend
-    digest: sha256:7754ecb85c1a618b152b4499a87eef8c7a7339de174d45e37dea1674b0d437fb # {"$imagepolicy": "trainy:trainy-backend:digest"}
+    digest: sha256:09442dc83d37739b1aa9c2832ec571939b21e7ca14148ae03f4316f2a1988e97 # {"$imagepolicy": "trainy:trainy-backend:digest"}
   - name: ghcr.io/trainyapp/trainy-backend/worker
-    digest: sha256:247402a98a84c327bc0354110d058e2c7665348447a07bd89110fa85ea4e6bb3 # {"$imagepolicy": "trainy:trainy-worker:digest"}
+    digest: sha256:dd7e870ac79d5bfaae744e0414a8f1aabffdc313e16e952df02735df37dddcc0 # {"$imagepolicy": "trainy:trainy-worker:digest"}
