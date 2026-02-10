@@ -9,7 +9,9 @@ spec:
   ingress:
     metadata:
       annotations:
-        cert-manager.io/cluster-issuer: gts
+        cert-manager.io/issuer: cloudflare
+        cert-manager.io/issuer-kind: ClusterOriginIssuer
+        cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
     spec:
       rules:
         - host: grafana.kbs610.click
