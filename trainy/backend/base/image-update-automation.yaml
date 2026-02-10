@@ -6,8 +6,8 @@ spec:
   interval: 30m
   sourceRef:
     kind: GitRepository
-    name: trainy
-    namespace: trainy
+    name: flux-system
+    namespace: flux-system
   update:
     path: ./
     strategy: Setters
