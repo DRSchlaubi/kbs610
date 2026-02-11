@@ -5,7 +5,7 @@ metadata:
   annotations:
     replicator.v1.mittwald.de/replicate-to: trainy
 stringData:
-  ca.crt: >
+  ca.crt: |
     -----BEGIN CERTIFICATE-----
     MIIDazCCAlOgAwIBAgIUBLW4aVrYrhiivhywAp6JgYlB6SQwDQYJKoZIhvcNAQEL
     BQAwPTE7MDkGA1UEAxMyVmF1bHQgUm9vdCBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkg
