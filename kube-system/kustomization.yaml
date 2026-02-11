@@ -4,3 +4,4 @@ resources:
   - local-path-provisioner.yaml
   - replicator.yaml
   - users.yaml
+  - ca.yaml
