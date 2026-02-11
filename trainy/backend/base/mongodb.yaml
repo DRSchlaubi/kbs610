@@ -4,7 +4,7 @@ metadata:
   name: trainy-db
 spec:
   backup:
-    enabled: false
+    enabled: true
     image: percona/percona-backup-mongodb:2
     storages:
       s3-backup:

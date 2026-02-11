@@ -24,8 +24,9 @@ patches:
   - target:
       kind: PerconaServerMongoDB
     patch: |-
-      - op: remove
-        path: /spec/backup
+      - op: replace
+        path: /spec/backup/enabled
+        value: false
 images:
   - name: ghcr.io/trainyapp/trainy-backend
     digest: sha256:e9681074228fc2527c55a482d8ce89646c16b927bf742ea79032d06f8b28e47a # {"$imagepolicy": "trainy-staging:trainy-backend:digest"}
