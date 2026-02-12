@@ -2,6 +2,10 @@
 
 Repo for Cloud Services Project by @7reax, @Schlauer-Hax, @Angry007, @Lele1409 and @DRSchlaubi
 
+# Slides
+
+You can find the slides for the presentation in the [slides](NEWCS%20-%20Trainy.pdf) directory.
+
 # Requirements
 - [terraform](https://developer.hashicorp.com/terraform/install)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
