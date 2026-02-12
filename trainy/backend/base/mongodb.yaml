@@ -11,7 +11,8 @@ spec:
         main: true
         s3:
           insecureSkipTLSVerify: true
-          bucket: trainy-mongodb-backups
+          bucket: trainy-backups
+          prefix: trainy-db
           credentialsSecret: s3-credentials
           endpointUrl: https://10.32.4.25/
         type: s3
