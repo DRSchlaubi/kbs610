@@ -27,6 +27,8 @@ spec:
               value: trainy
             - name: LOG_LEVEL
               value: TRACE
+            - name: HOSTNAME
+              value: https://sr.kbs610.click
             - name: ENVIRONMENT
               value: DEVELOPMENT
             - name: RABBITMQ_URI

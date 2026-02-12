@@ -27,6 +27,8 @@ spec:
               value: trainy
             - name: ENVIRONMENT
               value: DEVELOPMENT
+            - name: HOSTNAME
+              value: https://rbc.kbs610.click
             - name: RABBITMQ_URI
               valueFrom:
                 secretKeyRef:
