@@ -13,4 +13,4 @@ images:
   - name: ghcr.io/trainyapp/trainy-backend
     digest: sha256:dcb7b13e8344a839e77999050b1e6eee279373313247b982ba9d6f7fb0d6427b # {"$imagepolicy": "trainy:trainy-backend:digest"}
   - name: ghcr.io/trainyapp/trainy-backend/worker
-    digest: sha256:b4ce6f8f5c1c268da3234b56e7a21726ec3fdd5e499cd96d5cef233168d432b7 # {"$imagepolicy": "trainy:trainy-worker:digest"}
+    digest: sha256:349b1935c6e371a5c9cded831446b48fb690d25429e3a786989d95eb4cfb10de # {"$imagepolicy": "trainy:trainy-worker:digest"}
