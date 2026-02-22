@@ -6,14 +6,6 @@ resources:
   - gotk-sync.yaml
 patches:
   - patch: |
-      # Otherwise the flux pods won't be scheduled since flux is responsible for installing the cloud controller manager
-      - op: add
-        path: /spec/template/spec/tolerations
-        value:
-          - key: "node.cloudprovider.kubernetes.io/uninitialized"
-            operator: "Equal"
-            value: "true"
-            effect: "NoSchedule"
       # Used by secrets
       - op: add
         path: /spec/template/spec/containers/0/args/-
